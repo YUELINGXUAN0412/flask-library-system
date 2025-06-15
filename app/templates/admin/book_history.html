@@ -1,0 +1,44 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">记录ID</th>
+                <th scope="col">借阅人</th>
+                <th scope="col">申请日期</th>
+                <th scope="col">借出日期</th>
+                <th scope="col">应还日期</th>
+                <th scope="col">实际归还日期</th>
+                <th scope="col">状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <th scope="row">{{ record.id }}</th>
+                <td>{{ record.borrower.username }}</td>
+                <td>{{ record.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ record.borrow_date.strftime('%Y-%m-%d %H:%M') if record.borrow_date else '待批准' }}</td>
+                <td>{{ record.due_date.strftime('%Y-%m-%d') if record.due_date else '-' }}</td>
+                <td>{{ record.return_date.strftime('%Y-%m-%d %H:%M') if record.return_date else '-' }}</td>
+                <td>
+                    {% if record.status == 0 %}<span class="badge bg-primary">借阅待批</span>
+                    {% elif record.status == 1 %}<span class="badge bg-warning text-dark">借阅中</span>
+                    {% elif record.status == 2 %}<span class="badge bg-success">已归还</span>
+                    {% elif record.status == 3 %}<span class="badge bg-danger">逾期归还</span>
+                    {% elif record.status == 6 %}<span class="badge bg-info text-dark">还书待批</span>
+                    {% elif record.status == 9 %}<span class="badge bg-dark">借阅失败</span>
+                    {% else %}<span class="badge bg-secondary">未知</span>{% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center py-5 text-muted">这本书还没有任何借阅记录。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('admin.books') }}" class="btn btn-secondary mt-3">返回图书列表</a>
+</div>
+{% endblock %}

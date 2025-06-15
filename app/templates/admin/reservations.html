@@ -1,0 +1,33 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">书名</th>
+                <th scope="col">为谁保留</th>
+                <th scope="col">预约日期</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.book.title }}</td>
+                <td>{{ reservation.user.username }}</td>
+                <td>{{ reservation.reservation_date.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <form action="{{ url_for('admin.fulfill_reservation_route', reservation_id=reservation.id) }}" method="post">
+                        <button type="submit" class="btn btn-sm btn-success">确认为其办理借阅</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center py-5 text-muted">当前没有为用户保留的待取书籍。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

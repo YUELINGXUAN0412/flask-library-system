@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ library_name }}{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p class="lead">请确认您要申请借阅以下图书</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h4 class="card-title">{{ book.title }}</h4>
+                <p class="card-text text-muted">作者: {{ book.author }}</p>
+                <hr>
+                <p>根据系统设置，借阅时长为 <strong>{{ SystemConfig.get('BORROW_DAYS', 30) }}</strong> 天。</p>
+                <p class="text-muted small">提交申请后，请等待管理员审核。审核通过后，借阅将正式生效，并开始计算借阅时长。</p>
+                
+                <form action="{{ url_for('borrow.request_borrow_route', book_id=book.id) }}" method="post" class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">确认申请借阅</button>
+                    <a href="{{ request.referrer or url_for('main.index') }}" class="btn btn-secondary btn-lg">取消</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

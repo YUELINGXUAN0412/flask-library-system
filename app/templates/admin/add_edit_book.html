@@ -1,0 +1,77 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header">
+        <h5 class="mb-0">{{ title }}</h5>
+    </div>
+    <div class="card-body p-4">
+        <form method="POST" novalidate enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                    {% for error in form.title.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.author.label(class="form-label") }}
+                    {{ form.author(class="form-control") }}
+                    {% for error in form.author.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form.publisher.label(class="form-label") }}
+                {{ form.publisher(class="form-control") }}
+                {% for error in form.publisher.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.isbn.label(class="form-label") }}
+                    {{ form.isbn(class="form-control") }}
+                    {% for error in form.isbn.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.category.label(class="form-label") }}
+                    {{ form.category(class="form-select") }}
+                    {% for error in form.category.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    {{ form.publication_date.label(class="form-label") }}
+                    {{ form.publication_date(class="form-control") }}
+                    {% for error in form.publication_date.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form.price.label(class="form-label") }}
+                    {{ form.price(class="form-control") }}
+                    {% for error in form.price.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form.total_count.label(class="form-label") }}
+                    {{ form.total_count(class="form-control") }}
+                    {% for error in form.total_count.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+            </div>
+            <div class="mb-3">
+                {{ form.status.label(class="form-label") }}
+                {{ form.status(class="form-select") }}
+                {% for error in form.status.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.cover.label(class="form-label") }}
+                {{ form.cover(class="form-control") }}
+                {% for error in form.cover.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                {% if book and book.cover_image %}
+                    <div class="mt-2">
+                        <small>当前封面:</small><br>
+                        <img src="{{ url_for('static', filename='uploads/covers/' + book.cover_image) }}" alt="当前封面" style="max-height: 100px; border-radius: 5px;">
+                    </div>
+                {% endif %}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('admin.books') }}" class="btn btn-secondary">取消</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

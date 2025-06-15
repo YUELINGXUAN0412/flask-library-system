@@ -1,0 +1,25 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header">
+        {{ title }}
+    </div>
+    <div class="card-body p-4">
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.category_name.label(class="form-label") }}
+                {{ form.category_name(class="form-control") }}
+                {% for error in form.category_name.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control", rows=4) }}
+                {% for error in form.description.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('admin.categories') }}" class="btn btn-secondary">取消</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

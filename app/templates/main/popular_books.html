@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ library_name }}{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-trophy-fill me-3 fs-1 text-warning"></i>
+            <div>
+                <h1>{{ title }}</h1>
+                <p class="lead mb-0">发现本馆最受欢迎的知识宝藏</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<ol class="list-group list-group-numbered shadow-sm">
+    {% for book, borrow_count in top_books %}
+        {# 根据排名赋予不同的样式类 #}
+        {% set rank_class = '' %}
+        {% if loop.index == 1 %}
+            {% set rank_class = 'rank-1' %}
+        {% elif loop.index == 2 %}
+            {% set rank_class = 'rank-2' %}
+        {% elif loop.index == 3 %}
+            {% set rank_class = 'rank-3' %}
+        {% endif %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start p-3 {{ rank_class }}">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">
+                    {# 为前三名增加奖杯图标 #}
+                    {% if loop.index == 1 %}
+                        <i class="bi bi-trophy-fill text-gold me-2"></i>
+                    {% elif loop.index == 2 %}
+                        <i class="bi bi-trophy-fill text-silver me-2"></i>
+                    {% elif loop.index == 3 %}
+                        <i class="bi bi-trophy-fill text-bronze me-2"></i>
+                    {% endif %}
+                    <a href="{{ url_for('main.book_detail', book_id=book.id) }}" class="text-decoration-none text-dark stretched-link">{{ book.title }}</a>
+                </div>
+                <small class="text-muted">作者: {{ book.author }}</small>
+            </div>
+            <span class="badge bg-primary rounded-pill">{{ borrow_count }} 次借阅</span>
+        </li>
+    {% else %}
+        <li class="list-group-item">暂无图书借阅记录，无法生成排行。</li>
+    {% endfor %}
+</ol>
+{% endblock %}

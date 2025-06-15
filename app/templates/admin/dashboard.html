@@ -1,0 +1,6 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+    <h4>欢迎回来, {{ current_user.username }}!</h4>
+    <p class="text-muted">请从左侧的导航菜单中选择一个项目开始管理。</p>
+    <p>这里是仪表盘，未来可以放置更多快捷操作和关键指标速览。</p>
+{% endblock %}

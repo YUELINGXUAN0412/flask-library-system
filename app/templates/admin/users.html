@@ -1,0 +1,54 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">用户名</th>
+                <th scope="col">邮箱</th>
+                <th scope="col">角色</th>
+                <th scope="col">状态</th>
+                <th scope="col">注册时间</th>
+                <th scope="col" class="text-end">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <th scope="row">{{ user.id }}</th>
+                <td>
+                    {{ user.username }}
+                    {% if user == current_user %}<span class="badge bg-info text-dark ms-2">这是你</span>{% endif %}
+                </td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.role == 3 %}<span class="badge bg-danger">超级管理员</span>
+                    {% elif user.role == 2 %}<span class="badge bg-success">管理员</span>
+                    {% else %}<span class="badge bg-secondary">普通用户</span>{% endif %}
+                </td>
+                <td>
+                    {% if user.status == 1 %}<span class="badge bg-primary">启用</span>
+                    {% else %}<span class="badge bg-warning text-dark">禁用</span>{% endif %}
+                </td>
+                <td>{{ user.create_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td class="text-end text-nowrap">
+                    {# 核心改动：只有当被操作用户的角色级别低于当前管理员时，才显示操作按钮 #}
+                    {% if user.role < current_user.role %}
+                        <a href="{{ url_for('admin.edit_user', id=user.id) }}" class="btn btn-sm btn-outline-primary">编辑</a>
+                        <form action="{{ url_for('admin.delete_user', id=user.id) }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('你确定要永久删除用户【{{ user.username }}】吗？此操作不可撤销！');">
+                                删除
+                            </button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-center py-5 text-muted">数据库中没有用户。</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+# Virtual Environment
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Instance folder (contains sensitive data like session keys)
+instance/
+
+# IDE / OS specific files
+.vscode/
+.idea/
+*.DS_Store

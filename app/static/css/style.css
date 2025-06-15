@@ -1,0 +1,169 @@
+/* app/static/css/style.css */
+
+/* --- 1. 全局与字体定义 --- */
+body {
+    /* 不再使用 Google Fonts，使用系统默认的 sans-serif 字体栈 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #f8f9fa;
+    padding-top: 56px; 
+}
+
+/* --- 2. 导航栏美化 --- */
+.navbar {
+    transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+}
+body.is-homepage .navbar:not(.scrolled) {
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.navbar.scrolled, .navbar:not(.is-homepage) {
+    background-color: rgba(33, 37, 41, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.navbar .navbar-brand, .navbar .nav-link {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.navbar-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.avatar-container {
+    position: relative;
+    display: inline-block;
+}
+.avatar-notification-badge {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    border: 2px solid #343a40;
+}
+
+/* --- 3. 首页英雄区域 --- */
+.hero-section {
+    position: relative;
+    height: 55vh;
+    min-height: 400px;
+    /* 这里是本次更新的重点：使用本地图片的相对路径 */
+    background-image: url('../img/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -56px;
+}
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- 4. 通用页头样式 --- */
+.page-header {
+    background: linear-gradient(45deg, var(--bs-primary), #1e965f);
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    margin-top: -56px;
+    padding-top: calc(2.5rem + 56px);
+}
+
+/* --- 5. 基础修复与美化 --- */
+.navbar-brand { white-space: nowrap; }
+:root {
+    --bs-primary: #198754;
+    --bs-primary-rgb: 25, 135, 84;
+}
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: #157347;
+    --bs-btn-hover-border-color: #146c43;
+    transition: all 0.2s ease-in-out;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.input-group .btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+.card { transition: all 0.3s ease-in-out; }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+.form-control:focus {
+    border-color: rgba(var(--bs-primary-rgb), 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+.book-cover-container { position: relative; }
+.book-cover-img {
+    aspect-ratio: 2 / 3;
+    width: 100%;
+    object-fit: cover;
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.book-cover-img:hover {
+    transform: scale(1.03) perspective(800px) rotateY(-5deg);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.4);
+}
+.is-delisted { filter: grayscale(100%); }
+.cover-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(50, 50, 50, 0.6);
+    color: white; display: flex; justify-content: center; align-items: center;
+    border-radius: 4px; pointer-events: none;
+}
+.overlay-text {
+    font-size: 1.5rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    border: 2px solid white; padding: 0.5rem 1rem; transform: rotate(-15deg);
+}
+.toast-container { z-index: 1100; }
+
+/* --- 排行榜的特殊样式 --- */
+.text-gold { color: #ffd700; }
+.text-silver { color: #c0c0c0; }
+.text-bronze { color: #cd7f32; }
+
+.list-group-item.rank-1 {
+    background-color: #fff8e1;
+    border-left: 5px solid #ffd700;
+}
+.list-group-item.rank-2 {
+    background-color: #f5f5f5;
+    border-left: 5px solid #c0c0c0;
+}
+.list-group-item.rank-3 {
+    background-color: #fbe9d7;
+    border-left: 5px solid #cd7f32;
+}
+
+/* 新增：确保 stretched-link 表现正常 */
+.list-group-item {
+    position: relative;
+}

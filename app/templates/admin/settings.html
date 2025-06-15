@@ -1,0 +1,31 @@
+{% extends "admin/admin_base.html" %}
+{% block admin_content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-4">
+                {{ form.library_name.label(class="form-label") }}
+                {{ form.library_name(class="form-control") }}
+                <div class="form-text text-muted">{{ form.library_name.description }}</div>
+            </div>
+            <div class="mb-4">
+                {{ form.borrow_days.label(class="form-label") }}
+                {{ form.borrow_days(class="form-control") }}
+                <div class="form-text text-muted">{{ form.borrow_days.description }}</div>
+            </div>
+            <div class="mb-4">
+                {{ form.max_borrow_count.label(class="form-label") }}
+                {{ form.max_borrow_count(class="form-control") }}
+                <div class="form-text text-muted">{{ form.max_borrow_count.description }}</div>
+            </div>
+            <div class="mb-4">
+                {{ form.fine_rate.label(class="form-label") }}
+                {{ form.fine_rate(class="form-control") }}
+                <div class="form-text text-muted">{{ form.fine_rate.description }}</div>
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+    </div>
+</div>
+{% endblock %}

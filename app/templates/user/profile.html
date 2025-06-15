@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ library_name }}{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p class="lead">管理你的账户信息和设置</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header">操作</div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('user.edit_profile') }}" class="list-group-item list-group-item-action">编辑个人资料</a>
+                <a href="{{ url_for('user.change_password') }}" class="list-group-item list-group-item-action">修改密码</a>
+                <a href="{{ url_for('user.upload_avatar') }}" class="list-group-item list-group-item-action">上传头像</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                {% if current_user.avatar_image %}
+                    <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar_image) }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="User Avatar">
+                {% else %}
+                    <img src="{{ url_for('static', filename='default_avatar_black.svg') }}" class="rounded-circle mb-3 bg-light" style="width: 150px; height: 150px;" alt="Default Avatar">
+                {% endif %}
+                <h4 class="card-title">{{ current_user.username }}</h4>
+                <p class="text-muted">{{ current_user.email }}</p>
+                <hr>
+                <div class="text-start">
+                    <p><strong>手机号:</strong> {{ current_user.phone or '未设置' }}</p>
+                    <p><strong>角色:</strong> {% if current_user.role == 2 %}管理员{% else %}普通用户{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

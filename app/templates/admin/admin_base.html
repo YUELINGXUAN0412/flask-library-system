@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - 管理后台{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm mb-4">
+            <a href="{{ url_for('admin.dashboard') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                <span><i class="bi bi-speedometer2 me-2"></i>仪表盘</span>
+            </a>
+            <a href="{{ url_for('admin.statistics') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.statistics' %}active{% endif %}">
+                <span><i class="bi bi-bar-chart-line-fill me-2"></i>统计分析</span>
+            </a>
+            <a href="{{ url_for('admin.approvals') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.approvals' %}active{% endif %}">
+                <span><i class="bi bi-patch-check-fill me-2"></i>事务审批</span>
+                {% if admin_approval_count > 0 %}<span class="badge bg-danger rounded-pill">{{ admin_approval_count }}</span>{% endif %}
+            </a>
+            <a href="{{ url_for('admin.reservations') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.reservations' %}active{% endif %}">
+                <span><i class="bi bi-person-check-fill me-2"></i>预约管理</span>
+                {% if admin_pickup_count > 0 %}<span class="badge bg-danger rounded-pill">{{ admin_pickup_count }}</span>{% endif %}
+            </a>
+            <a href="{{ url_for('admin.users') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.users' or request.endpoint == 'admin.edit_user' %}active{% endif %}">
+                <span><i class="bi bi-people-fill me-2"></i>用户管理</span>
+            </a>
+            <a href="{{ url_for('admin.categories') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint.startswith('admin.categor') %}active{% endif %}">
+                <span><i class="bi bi-tags-fill me-2"></i>分类管理</span>
+            </a>
+            <a href="{{ url_for('admin.books') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint.startswith('admin.book') %}active{% endif %}">
+                <span><i class="bi bi-book-half me-2"></i>图书管理</span>
+            </a>
+            <a href="{{ url_for('admin.settings') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint == 'admin.settings' %}active{% endif %}">
+                <span><i class="bi bi-gear-fill me-2"></i>系统设置</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% block admin_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ library_name }}{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p class="lead">请确认您要预约以下图书</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="card-title">{{ book.title }}</h4>
+                <p class="card-text text-muted">作者: {{ book.author }}</p>
+                <hr>
+                <p>该图书当前无库存可借。提交预约申请后，请等待管理员审批。</p>
+                <p class="text-muted small">审批通过后，当有图书归还时，系统将按预约顺序为您保留，届时您需要前来办理借阅手续。</p>
+                
+                <form action="{{ url_for('borrow.reserve', book_id=book.id) }}" method="post" class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">确认提交预约</button>
+                    <a href="{{ request.referrer or url_for('main.index') }}" class="btn btn-secondary btn-lg">取消</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

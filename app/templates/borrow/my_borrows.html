@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ library_name }}{% endblock %}
+
+{% block page_header %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p class="lead">管理你的借阅历史和当前借阅</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">书名</th>
+                <th scope="col">作者</th>
+                <th scope="col">申请/借阅日期</th>
+                <th scope="col">应还日期</th>
+                <th scope="col">状态与备注</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.borrowed_book.title if record.borrowed_book else '[图书已删除]' }}</td>
+                <td>{{ record.borrowed_book.author if record.borrowed_book else '-' }}</td>
+                <td>{{ (record.borrow_date or record.request_date).strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ record.due_date.strftime('%Y-%m-%d') if record.due_date else '-' }}</td>
+                <td>
+                    {% if record.status == 0 %}<span class="badge bg-primary">借阅待批</span>
+                    {% elif record.status == 1 %}<span class="badge bg-warning text-dark">借阅中</span>
+                    {% elif record.status == 2 %}<span class="badge bg-success">已归还</span>
+                    {% elif record.status == 3 %}<span class="badge bg-danger">逾期归还</span>
+                    {% elif record.status == 6 %}<span class="badge bg-info text-dark">还书待批</span>
+                    {% elif record.status == 9 %}<span class="badge bg-danger">借阅被拒</span>
+                    {% else %}<span class="badge bg-secondary">未知</span>{% endif %}
+                    
+                    {# 如果有拒绝理由，则显示出来 #}
+                    {% if record.rejection_reason %}
+                    <div class="form-text text-danger mt-1">{{ record.rejection_reason }}</div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if record.status == 1 %}
+                    <form action="{{ url_for('borrow.request_return_route', record_id=record.id) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">申请还书</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-center py-5 text-muted">你还没有任何借阅记录。</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

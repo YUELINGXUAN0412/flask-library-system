@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ library_name }}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='document-e.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/font/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                <div class="toast-header">
+                    {% if category == 'success' %}<i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>{% elif category == 'danger' %}<i class="bi bi-x-circle-fill text-danger me-2 fs-5"></i>{% elif category == 'info' %}<i class="bi bi-info-circle-fill text-info me-2 fs-5"></i>{% elif category == 'warning' %}<i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>{% else %}<i class="bi bi-bell-fill me-2 fs-5"></i>{% endif %}
+                    <strong class="me-auto">{{ library_name }}</strong>
+                    <small>刚刚</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">{{ message }}</div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="main-nav">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <img src="{{ url_for('static', filename='document-e.svg') }}" alt="Logo" width="24" height="24" class="d-inline-block align-text-top me-2">
+            {{ library_name }}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.popular_books') }}">热门排行</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                {% if current_user.is_anonymous %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">登录</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">注册</a></li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="avatar-container">
+                            {% if current_user.avatar_image %}
+                                <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar_image) }}" class="navbar-avatar" alt="Avatar">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='default_avatar.svg') }}" class="navbar-avatar" alt="Default Avatar">
+                            {% endif %}
+                            
+                            {% set notification_count = admin_notification_count if current_user.role >= 2 else (user_borrow_notification_count + user_reservation_notification_count) %}
+                            {% if notification_count > 0 %}
+                            <span class="avatar-notification-badge"></span>
+                            {% endif %}
+                        </span>
+                        {{ current_user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('user.profile') }}">个人中心</a></li>
+                        <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('borrow.my_borrows') }}">我的借阅{% if user_borrow_notification_count > 0 %}<span class="badge bg-danger rounded-pill">{{ user_borrow_notification_count }}</span>{% endif %}</a></li>
+                        <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('borrow.my_reservations') }}">我的预约{% if user_reservation_notification_count > 0 %}<span class="badge bg-danger rounded-pill">{{ user_reservation_notification_count }}</span>{% endif %}</a></li>
+                        {% if current_user.role >= 2 %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url_for('admin.dashboard') }}">管理后台{% if admin_notification_count > 0 %}<span class="badge bg-danger rounded-pill">{{ admin_notification_count }}</span>{% endif %}</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">退出登录</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main>
+    {% block page_header %}{% endblock %}
+    <div class="container py-4">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
