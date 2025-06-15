@@ -1,0 +1,44 @@
+# .github/workflows/ci.yml
+
+# 工作流的名称
+name: Flask Library CI
+
+# 触发条件：当有代码 push 到 main 分支，或者有人创建 pull request 时，自动运行
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 定义工作任务
+jobs:
+  # 任务的ID，可以随便取名
+  build:
+    # 运行环境：使用最新版的 Ubuntu Linux
+    runs-on: ubuntu-latest
+
+    # 定义任务步骤
+    steps:
+    # 第一步：检出代码
+    # 这个 action 会把你的仓库代码，下载到云端服务器上
+    - uses: actions/checkout@v4
+
+    # 第二步：设置 Python 环境
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    # 第三步：安装依赖
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    # 第四步：使用 flake8 进行代码规范检查
+    - name: Lint with flake8
+      run: |
+        # 检查基本的语法错误和未定义的变量，如果存在，则构建失败
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # 检查其他风格问题，但即使有问题也不让构建失败（--exit-zero）
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
