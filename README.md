@@ -34,25 +34,28 @@
 
 ## 🐳 使用Docker Compose部署
 ```yaml
-version: '3.8'
-
 services:
   web:
-    image: yuelingxuan/library-system:1.0
+    image: yuelingxuan/library-system:latest
     container_name: library_web
     restart: unless-stopped
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
     volumes:
-      - ./uploads:/app/app/static/uploads  # 持久化用户上传文件
+      - ./uploads:/app/app/static/uploads
     environment:
       - FLASK_ENV=production
-      - SECRET_KEY=a-secure-and-random-secret-key-for-deployment
+      - SECRET_KEY=a-very-long-and-random-secret-key-that-you-should-change
       - DB_USER=root
       - DB_PASSWORD=mysecretpassword
       - DB_HOST=db
+      - DB_PORT=3306
       - DB_NAME=library_db
       - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ADMIN_DEFAULT_PASSWORD=admin123
+      - UPLOAD_FOLDER=/app/app/static/uploads/covers
+      - AVATAR_UPLOAD_FOLDER=/app/app/static/uploads/avatars
     depends_on:
       - db
       - redis
@@ -64,10 +67,10 @@ services:
     container_name: library_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: mysecretpassword  # 生产环境建议使用更安全的密码
+      MYSQL_ROOT_PASSWORD: mysecretpassword
       MYSQL_DATABASE: library_db
     volumes:
-      - db_data:/var/lib/mysql  # 数据持久化存储
+      - db_data:/var/lib/mysql
     networks:
       - library_net
 
@@ -76,7 +79,7 @@ services:
     container_name: library_redis
     restart: always
     volumes:
-      - redis_data:/data  # Redis持久化配置
+      - redis_data:/data
     networks:
       - library_net
 
