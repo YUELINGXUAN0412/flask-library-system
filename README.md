@@ -1,19 +1,41 @@
-1. 项目名称
-Flask 电子图书馆管理系统
+# 📚 Flask电子图书馆管理系统
 
-项目线上访问地址: https://library.yuelingxuan.cn
+[![在线访问](https://img.shields.io/badge/Online-https%3A%2F%2Flibrary.yuelingxuan.cn-blue)](https://library.yuelingxuan.cn)
+[![GitHub仓库](https://img.shields.io/badge/GitHub-Repository-brightgreen)](https://github.com/YUELINGXUAN0412/flask-library-system)
+[![Docker镜像](https://img.shields.io/badge/Docker-yuelingxuan%2Flibrary--system%3A1.0-orange)](https://hub.docker.com/r/yuelingxuan/library-system)
 
-项目GitHub仓库地址: https://github.com/YUELINGXUAN0412/flask-library-system
+## 📌 项目简介
+本项目是一个功能完善的电子图书馆管理系统，实现了图书管理、借阅流通、用户服务等核心业务流程。系统采用Flask框架开发，支持多角色权限管理，完整模拟了从图书借阅申请到预约队列触发的全业务闭环。
 
-项目Docker镜像地址: yuelingxuan/library-system:1.0
+## 🔑 权限体系
+### 🧑‍🎓 普通用户
+- 图书浏览/搜索/筛选
+- 在线提交借阅/预约申请
+- 借阅历史与预约状态管理
+- 个人资料维护（含头像上传）
 
-2. 项目描述
-本项目旨在开发一个功能完善、体验流畅的电子图书馆管理系统。系统为不同角色的用户（普通用户、管理员、超级管理员）提供差异化的功能权限。
+### 👨‍💻 管理员
+- 图书/分类/用户管理
+- 借阅/归还/预约审批处理
+- 运营数据统计分析
+- 系统日志查看
 
-普通用户可以浏览、搜索、筛选图书，并提交借阅和预约申请；可以查看自己的借阅历史、预约状态，并管理个人资料（包括上传头像）。
+### 👑 超级管理员
+- 管理员账号管理
+- 系统核心参数配置
+- 全局权限管控
 
-管理员拥有一个功能强大的后台，可以对图书、分类、用户进行管理，并集中处理用户的借阅、归还和预约申请，查看系统运营的关键统计数据。
+## 🌟 主要亮点
+✅ 完整的图书流通业务闭环  
+✅ 响应式设计适配多设备  
+✅ 头像上传与用户中心交互  
+✅ 可视化运营数据看板  
+✅ Docker容器化部署支持
 
-超级管理员则拥有最高权限，能够管理普通管理员并配置系统核心参数。
+## 🚀 部署与运行
+```bash
+# 拉取镜像
+docker pull yuelingxuan/library-system:1.0
 
-该项目完整地模拟了图书从“申请借阅”到“还书入库”，再到触发“预约队列”的完整业务闭环，并注重用户体验与界面美化。
+# 启动容器
+docker run -d -p 80:5000 yuelingxuan/library-system:1.0
