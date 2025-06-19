@@ -32,10 +32,58 @@
 ✅ 可视化运营数据看板  
 ✅ Docker容器化部署支持
 
-## 🚀 部署与运行
-```bash
-# 拉取镜像
-docker pull yuelingxuan/library-system:1.0
+## 🐳 使用Docker Compose部署
+```yaml
+version: '3.8'
 
-# 启动容器
-docker run -d -p 80:5000 yuelingxuan/library-system:1.0
+services:
+  web:
+    image: yuelingxuan/library-system:1.0
+    container_name: library_web
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/app/static/uploads  # 持久化用户上传文件
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=a-secure-and-random-secret-key-for-deployment
+      - DB_USER=root
+      - DB_PASSWORD=mysecretpassword
+      - DB_HOST=db
+      - DB_NAME=library_db
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+    networks:
+      - library_net
+
+  db:
+    image: mysql:8.0
+    container_name: library_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecretpassword  # 生产环境建议使用更安全的密码
+      MYSQL_DATABASE: library_db
+    volumes:
+      - db_data:/var/lib/mysql  # 数据持久化存储
+    networks:
+      - library_net
+
+  redis:
+    image: redis:6-alpine
+    container_name: library_redis
+    restart: always
+    volumes:
+      - redis_data:/data  # Redis持久化配置
+    networks:
+      - library_net
+
+networks:
+  library_net:
+    driver: bridge
+
+volumes:
+  db_data:
+  redis_data:
