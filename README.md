@@ -2,7 +2,7 @@
 
 [![在线访问](https://img.shields.io/badge/Online-https%3A%2F%2Flibrary.yuelingxuan.cn-blue)](https://library.yuelingxuan.cn)
 [![GitHub仓库](https://img.shields.io/badge/GitHub-Repository-brightgreen)](https://github.com/YUELINGXUAN0412/flask-library-system)
-[![Docker镜像](https://img.shields.io/badge/Docker-yuelingxuan%2Flibrary--system%3A1.0-orange)](https://hub.docker.com/r/yuelingxuan/library-system)
+[![Docker镜像](https://img.shields.io/badge/Docker-yuelingxuan%2Flibrary--system%3Alatest-orange)](https://hub.docker.com/r/yuelingxuan/library-system)
 
 ## 📌 项目简介
 本项目是一个功能完善的电子图书馆管理系统，实现了图书管理、借阅流通、用户服务等核心业务流程。系统采用Flask框架开发，支持多角色权限管理，完整模拟了从图书借阅申请到预约队列触发的全业务闭环。
